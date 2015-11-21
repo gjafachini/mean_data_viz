@@ -1,1 +1,1 @@
-var app = angular.module('MapApp', ['filterCtrl', 'gservice', 'checklist-model']);
+var app = angular.module('MapApp', ['filterCtrl', 'gservice', 'checklist-model', 'googlechart']);
