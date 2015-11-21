@@ -1,41 +1,55 @@
 // Dependencies
-var mongoose        = require('mongoose');
-var User            = require('./model.js');
+var mongoConnect = require('mongoconnect');
+collectionName = 'kiva_col';
 
 // Opens App Routes
 module.exports = function(app) {
 
-    // GET Routes
+    // POST loanRanking
     // --------------------------------------------------------
-    // Retrieve records for all users in the db
-    app.get('/users', function(req, res){
+    // Retrieve Loan Rank in the db
+    app.post('/loanRanking', function(req, res){
 
-        // Uses Mongoose schema to run the search (empty conditions)
-        var query = User.find({});
-        query.exec(function(err, users){
+        console.log("Loan Ranking POST received");
+
+        mongoConnect.execute(function(err, db) {
             if(err)
                 res.send(err);
 
-            // If no errors are found, it responds with a JSON of all users
-            res.json(users);
+            console.log("Getting collection");
+            var collection = db.collection(collectionName);
+
+            var sectorList = req.body.sectors;
+
+            if (sectorList.length == 0) {
+                //Get all sectors
+                sectorList = ["Agriculture", "Arts", "Clothing", "Construction", "Education", "Entertainment",
+                              "Food", "Retail", "Health", "Personal Use", "Housing", "Manufacturing", "Services",
+                              "Transportation", "Wholesale"];
+            }
+
+            console.log("Loan Ranking - doing aggregation");
+            collection.aggregate(
+                [
+                    {$match: {type: "loan", sector: {$in: sectorList}}},
+                    {$group: 
+                        { 
+                            _id : "$country_code",
+                            total_loan: {$sum: "$loan_amount"},
+                            total_lender: {$sum: "$lender_count"}
+                        }
+                    },
+                    {$sort: {total_loan : -1}}
+                ],
+                function(agreg_err, agreg_res){
+                    console.log("Aggregation returned.");
+                    console.log(agreg_res);
+                    if(agreg_err)
+                        res.send(agreg_err);
+
+                    // If no errors, respond with a JSON of all users that meet the criteria
+                    res.json(agreg_res);
+                });
         });
     });
-
-    // POST Routes
-    // --------------------------------------------------------
-    // Provides method for saving new users in the db
-    app.post('/users', function(req, res){
-
-        // Creates a new User based on the Mongoose schema and the post bo.dy
-        var newuser = new User(req.body);
-
-        // New User is saved in the db.
-        newuser.save(function(err){
-            if(err)
-                res.send(err);
-
-            // If no errors are found, it responds with a JSON of the new user
-            res.json(req.body);
-        });
-    });
-};  
+};

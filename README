@@ -11,6 +11,3 @@ bower install modernizr#3.0.0
 
 Dependencies install:
 npm install
-
-Mongo Setup and Start:
-mongod --dbpath path_to_data

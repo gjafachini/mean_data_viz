@@ -1,7 +1,7 @@
 // Dependencies
 // -----------------------------------------------------
 var express         = require('express');
-var mongoose        = require('mongoose');
+var mongoconnect 	= require('mongoconnect');
 var port            = process.env.PORT || 3000;
 var morgan          = require('morgan');
 var bodyParser      = require('body-parser');
@@ -11,7 +11,7 @@ var app             = express();
 // Express Configuration
 // -----------------------------------------------------
 // Sets the connection to MongoDB
-mongoose.connect("mongodb://localhost/MeanMapApp");
+mongoconnect.setup('mongodb://kiva_view:12345Kiva@ds047524.mongolab.com:47524/kiva_db');
 
 // Logging and Parsing
 app.use(express.static(__dirname + '/public'));                 // sets the static files location to public
