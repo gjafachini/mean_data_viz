@@ -21,7 +21,6 @@
 
     <!-- Angular Scripts -->
     <script src="js/filterCtrl.js"></script>
-    <script src="js/gservice.js"></script>
     <script src="js/app.js"></script>
 
 </head>
@@ -49,23 +48,45 @@
                               <br>
                                 <button ng-click="checkAll()">check all</button>
                                 <button ng-click="uncheckAll()">uncheck all</button>
+                                <!-- Query button. Note that its tied to queryRanks() function from filterCtrl.  -->
+                                <button type="submit" class="btn btn-danger btn-block" ng-click="queryRanks()">Filter</button>
                             </div>
-                        <!-- Query button. Note that its tied to queryRanks() function from filterCtrl.  -->
-                        <button type="submit" class="btn btn-danger btn-block" ng-click="queryRanks()">Filter</button>
                     </form>
                 </div>
             </div>
         </div>
         
         <!-- Google Map -->
-        <div class="col-md-4">
-            <div ng-app="gservice" ng-controller="gservice">
+        <div class="col-md-6">
+            <div ng-app="filterCtrl" ng-controller="filterCtrl">
                 <div google-chart chart="chart" style="width: 900px; height: 500px;"></div>
             </div>
         </div>
-
-
     </div>
+
+    <div class="col-md-4">
+        <div ng-app="filterCtrl" ng-controller="filterCtrl">
+            <table st-table="rowCollection" class="table">
+                <thead>
+                    <tr>
+                        <th st-sort="country">Country</th>
+                        <th st-sort="loans">Loans</th>
+                        <th st-sort="lends">Lends</th>
+                        <th st-sort="debt">Debts</th>
+                    </tr>
+                    <tbody>
+                        <tr st-select-row="x" st-select-mode="single" ng-repeat="x in country_data">
+                            <td>{{ x.country }}</td>
+                            <td>{{ x.loans }}</td>
+                            <td>{{ x.lends }}</td>
+                            <td>{{ x.debt }}</td>
+                        </tr>
+                    </tbody>
+                </thead>
+            </table>
+        </div>
+    </div>
+
     <hr/>
     <!-- Footer -->
     <div class="footer">

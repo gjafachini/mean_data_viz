@@ -7,6 +7,10 @@ label {
     font-size:85%;
 }
 
+th {
+    font-size:85%;   
+}
+
 /* Space out content a bit */
 body {
     padding-top: 10px;
