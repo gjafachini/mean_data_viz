@@ -1,1 +1,1 @@
-var app = angular.module('meanMapApp', ['addCtrl', 'geolocation', 'gservice']);
+var app = angular.module('MapApp', ['filterCtrl', 'gservice', 'checklist-model']);

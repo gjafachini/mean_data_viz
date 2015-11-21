@@ -1,0 +1,7 @@
+div[ng-app] {
+    margin: 10px;
+}
+
+label {
+    display: block;
+}
