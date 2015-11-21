@@ -11,7 +11,7 @@ var app             = express();
 // Express Configuration
 // -----------------------------------------------------
 // Sets the connection to MongoDB
-mongoconnect.setup('mongodb://kiva_view:12345Kiva@ds047524.mongolab.com:47524/kiva_db');
+mongoconnect.setup('mongodb://kiva_viewer:12345Kiva@ds047524.mongolab.com:47524/kiva_db');
 
 // Logging and Parsing
 app.use(express.static(__dirname + '/public'));                 // sets the static files location to public
