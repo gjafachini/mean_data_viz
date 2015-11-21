@@ -2,10 +2,17 @@
     "name": "MeanMapsApp",
     "main": "server.js",
     "dependencies" : {
+    	"angular"    : "~1.4.8",
+    	"angular-google-chart"    : "0.0.11",
         "express"    : "~4.7.2",
         "morgan"     : "~1.2.2",
         "body-parser": "~1.5.2",
         "jsonwebtoken": "^5.0.2",
-        "method-override": "~2.1.2"
+        "method-override": "~2.1.2",
+        "angular-route" : "~1.4.6",
+        "bootstrap" : "3.3.5",
+        "checklist-model" : "0.6.0",
+        "jquery" : "2.1.4",
+        
     }
 }
