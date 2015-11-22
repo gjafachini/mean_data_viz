@@ -46,29 +46,7 @@ filterCtrl.controller('filterCtrl', function($filter, $scope, $http){
 
     $scope.updateMaps = function(queryResult) {
 
-        var options = {
-            //legend:'null',
-            colorAxis: {colors: ['#e31b23', 'white', '#4374e0']},
-            //sizeAxis: {minValue: 0, maxSize: 50},
-            backgroundColor: '#81d4fa'
-        }; 
 
-        var map_data = new google.visualization.DataTable();
-        map_data.addColumn('string', 'Country');
-        map_data.addColumn('number', 'Debt');
-
-        for(var i=0; i<queryResult.length; i++) {
-            if (queryResult[i].debt != null) {
-                if(queryResult[i].country == 'US') {
-                    map_data.addRow([queryResult[i].country, 600000]);
-                } else {
-                    map_data.addRow([queryResult[i].country, Number(queryResult[i].debt)]);
-                }
-            }
-        }
-
-        $scope.Geochart = new google.visualization.GeoChart(document.getElementById('Geochart'));
-        $scope.Geochart.draw(map_data, options);
     }
 
     $scope.queryRanks = function() {
@@ -78,7 +56,29 @@ filterCtrl.controller('filterCtrl', function($filter, $scope, $http){
             // Store the filtered results in queryResults
             .success(function(queryResult){
                 // Pass the filtered results to the Google Map Service and refresh the map
-                $scope.updateMaps(queryResult);
+                var options = {
+                    //legend:'null',
+                    colorAxis: {colors: ['#e31b23', 'white', '#4374e0']},
+                    //sizeAxis: {minValue: 0, maxSize: 50},
+                    backgroundColor: '#81d4fa'
+                }; 
+
+                var map_data = new google.visualization.DataTable();
+                map_data.addColumn('string', 'Country');
+                map_data.addColumn('number', 'Debt');
+
+                for(var i=0; i<queryResult.length; i++) {
+                    if (queryResult[i].debt != null) {
+                        if(queryResult[i].country == 'US') {
+                            map_data.addRow([queryResult[i].country, 600000]);
+                        } else {
+                            map_data.addRow([queryResult[i].country, Number(queryResult[i].debt)]);
+                        }
+                    }
+                }
+
+                $scope.Geochart = new google.visualization.GeoChart(document.getElementById('Geochart'));
+                $scope.Geochart.draw(map_data, options);
 
                 // Update table
                 console.log("Loading Table");
