@@ -44,11 +44,6 @@ filterCtrl.controller('filterCtrl', function($filter, $scope, $http){
         $scope.filter.sectors = [];
     };
 
-    $scope.updateMaps = function(queryResult) {
-
-
-    }
-
     $scope.queryRanks = function() {
         console.log("Filter called: " + $scope.filter);
         // Post the queryRanks to the /queryRanks POST route to retrieve the filtered results
@@ -97,6 +92,35 @@ filterCtrl.controller('filterCtrl', function($filter, $scope, $http){
 
                 $scope.table = new google.visualization.Table(document.getElementById('table'));
                 $scope.table.draw(query_data, {width: '100%', height: '100%'});
+
+                google.visualization.events.addListener($scope.Geochart, 'select',function () {
+                    
+                    $scope.table.setSelection($scope.Geochart.getSelection());                   
+                    var selection = $scope.Geochart.getSelection();            
+                    
+                    //PARA RETORNAR VALOR DO PAIS SELECIONADO: data.getValue(selection[0].row, 0)
+                    console.log(query_data.getValue(selection[0].row, 0));
+
+                    if (selection.length > 0) {
+                        
+                        var view = new google.visualization.DataView(query_data);
+                        
+                        view.setColumns([0, {
+                            type: 'number',
+                            label: query_data.getColumnLabel(1),
+                            calc: function (dt, row) {
+                                return dt.getValue(row, 1);
+                            }
+                        }]);
+                        
+                        Geochart.draw(view, options);
+                    }
+                    else {
+                        Geochart.draw(query_data, options);
+                    }
+                });
+
+                
             })
         
             .error(function(queryResult){
