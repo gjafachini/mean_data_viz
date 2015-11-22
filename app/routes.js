@@ -88,6 +88,10 @@ module.exports = function(app) {
                     });
                 }
 
+                function currencyFormat (num) {
+                    return num.toFixed(2);
+                }
+
                 process_lenders_to_a_country = function(loans_aggreg, lenders_by_country) {
                     var send_data = [];
                     var globalMin = 999999999;
@@ -108,12 +112,12 @@ module.exports = function(app) {
                                 totalLends = meanLoan * lenders_by_country[j].total_loan;
                                 debt = totalLends - loans_aggreg[i].total_loan;
                                 
-                                if (totalLends != null) {
+                                if (totalLends != null && lenders_by_country[j]._id != 'IN') {
                                     send_data.push({
                                         "country" : loans_aggreg[i]._id,
-                                        "loans" : loans_aggreg[i].total_loan,
-                                        "lends" : totalLends,
-                                        "debt" : debt
+                                        "loans" : currencyFormat(loans_aggreg[i].total_loan),
+                                        "lends" : currencyFormat(totalLends),
+                                        "debt" : currencyFormat(debt)
                                     });
                                 }
                             }
@@ -123,12 +127,14 @@ module.exports = function(app) {
                         if(!found) {
                                 debt = - loans_aggreg[i].total_loan;
                                 
-                                send_data.push({
-                                    "country" : loans_aggreg[i]._id,
-                                    "loans" : loans_aggreg[i].total_loan,
-                                    "lends" : 0,
-                                    "debt" : debt
-                                });
+                                if (totalLends != null && lenders_by_country[j]._id != 'IN')  {
+                                    send_data.push({
+                                        "country" : loans_aggreg[i]._id,
+                                        "loans" : currencyFormat(loans_aggreg[i].total_loan),
+                                        "lends" : 0,
+                                        "debt" : currencyFormat(debt)
+                                    });
+                                }
                         }
                     }
 
@@ -143,13 +149,15 @@ module.exports = function(app) {
                         if(!found) {
                             totalLends = globalMin * lenders_by_country[j].total_loan;
                             debt = totalLends;
-                            
-                            send_data.push({
-                                "country" : lenders_by_country[j]._id,
-                                "loans" : 0,
-                                "lends" : totalLends,
-                                "debt" : debt
-                            });
+
+                            if (totalLends != null && lenders_by_country[j]._id != 'IN')  {
+                                send_data.push({
+                                    "country" : lenders_by_country[j]._id,
+                                    "loans" : 0,
+                                    "lends" : currencyFormat(totalLends),
+                                    "debt" : currencyFormat(debt)
+                                });
+                            }
                         }
                     }
 

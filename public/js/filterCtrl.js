@@ -1,5 +1,6 @@
-var filterCtrl = angular.module('filterCtrl', ['checklist-model', 'googlechart']);
-filterCtrl.controller('filterCtrl', function($scope, $http){
+var filterCtrl = angular.module('filterCtrl', ['checklist-model', 'googlechart', 'ngTable']);
+google.load('visualization', '1', { packages: ['Geochart', 'table'] });
+filterCtrl.controller('filterCtrl', function($filter, $scope, $http, ngTableParams){
 
     $scope.sectors = ['Agriculture', 
                       'Arts', 
@@ -51,6 +52,7 @@ filterCtrl.controller('filterCtrl', function($scope, $http){
         for(var i=0; i<queryResults.length; i++) {
             if (queryResults[i].debt != null) {
                 chart1.data[i+1] = [queryResults[i].country, queryResults[i].debt];
+                console.log(chart1.data[i+1]);                
             }
         }
 
@@ -75,10 +77,26 @@ filterCtrl.controller('filterCtrl', function($scope, $http){
             // Store the filtered results in queryResults
             .success(function(queryResult){
                 // Pass the filtered results to the Google Map Service and refresh the map
-                $scope.updateMaps(queryResult);
+                ///$scope.updateMaps(queryResult);
 
                 // Update table
-                $scope.country_data = queryResult;
+                console.log("Loading Table");
+
+                $scope.tableParams = new ngTableParams({
+                    page: 1,            // show first page
+                    total: queryResult.length, // length of data
+                    count: 10,           // count per page
+                    sorting: { debt: "desc" },
+                });
+
+                $scope.$watch('tableParams', function(params) {
+                    console.log(params);
+
+                    var orderedData = params.sorting ? $filter('orderBy')(queryResult, params.orderBy()) : queryResult;
+
+                    $scope.table_data = orderedData;
+                    console.log($scope.table_data);
+                }, true);
             })
         
             .error(function(queryResult){
@@ -87,5 +105,5 @@ filterCtrl.controller('filterCtrl', function($scope, $http){
         
     }
 
-    $scope.country_data = $scope.queryRanks();
+    $scope.queryRanks();
 });
