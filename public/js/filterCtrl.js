@@ -49,7 +49,9 @@ filterCtrl.controller('filterCtrl', function($scope, $http){
 
         chart1.data = [['Country', 'Debt']];
         for(var i=0; i<queryResults.length; i++) {
-            chart1.data[i+1] = [queryResults[i].country, queryResults[i].debt];
+            if (queryResults[i].debt != null) {
+                chart1.data[i+1] = [queryResults[i].country, queryResults[i].debt];
+            }
         }
 
         chart1.options = {
@@ -68,15 +70,10 @@ filterCtrl.controller('filterCtrl', function($scope, $http){
 
     $scope.queryRanks = function() {
 
-        console.log("Filter:");
-        console.log($scope.filter);
-
         // Post the queryRanks to the /queryRanks POST route to retrieve the filtered results
         $http.post('/queryRanks', $scope.filter)
             // Store the filtered results in queryResults
             .success(function(queryResult){
-                console.log(queryResult);
-
                 // Pass the filtered results to the Google Map Service and refresh the map
                 $scope.updateMaps(queryResult);
 
@@ -91,5 +88,4 @@ filterCtrl.controller('filterCtrl', function($scope, $http){
     }
 
     $scope.country_data = $scope.queryRanks();
-
 });
