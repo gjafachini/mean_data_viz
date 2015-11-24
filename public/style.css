@@ -30,6 +30,13 @@ body {
     padding-bottom: 19px;
 }
 
+.table {
+    padding-bottom: 19px;
+    padding-top: 19px;
+    border-top: 1px solid #e5e5e5;
+    width: 100%;
+}
+
 /* Custom page footer */
 .footer {
     color: #777;

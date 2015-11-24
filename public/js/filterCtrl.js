@@ -361,7 +361,7 @@ filterCtrl.controller('filterCtrl', function($filter, $scope, $http){
                     }
 
                     $scope.table = new google.visualization.Table(document.getElementById('table'));
-                    $scope.table.draw(query_data, {width: '100%', height: '100%'});
+                    $scope.table.draw(query_data);
 
                     google.visualization.events.addListener($scope.Geochart, 'select',function () {
                         
@@ -408,7 +408,7 @@ filterCtrl.controller('filterCtrl', function($filter, $scope, $http){
                 $scope.Geochart.draw(map_data, options);
 
                 $scope.table = new google.visualization.Table(document.getElementById('table'));
-                $scope.table.draw(query_data, {width: '100%', height: '100%'});
+                $scope.table.draw(query_data);
 
             }
     }

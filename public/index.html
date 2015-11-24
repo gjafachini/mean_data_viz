@@ -49,7 +49,7 @@
                                 <button ng-click="checkAll()">check all</button>
                                 <button ng-click="uncheckAll()">uncheck all</button>
                                 <!-- Query button. Note that its tied to queryRanks() function from filterCtrl.  -->
-                                <button type="submit" class="btn btn-danger btn-block" ng-click="queryRanks()">Filter</button>
+                                <button type="submit" class="btn btn-danger btn-block" ng-click="queryRanks()">Apply</button>
                         </form>
                     </div>
                 </div>
@@ -60,9 +60,10 @@
                 <div id="Geochart" style="width: 900px; height: 500px;"></div>
             </div>
         </div>
-        <td>
-            <div id="table" style="width: 300px; height: 500px;"></div>
-        </td>
+
+
+        <div class="table" id="table" style="width: 1200px; height: 500px;"></div>
+
 
         <hr/>
         <!-- Footer -->
